@@ -45,6 +45,18 @@ def test_readwrite():
     assert (adata.layers['L'] == adata_read.layers['L']).all()
 
     os.remove('test.h5ad')
+    
+def test_readwrite_loom():
+    adata = ad.AnnData(X=X, layers={'L':L.copy()})
+    adata.write_loom('test')
+
+    adata_read = ad.read('test')
+
+    assert adata.layers.keys() == adata_read.layers.keys()
+    assert (adata.layers['L'] == adata_read.layers['L']).all()
+
+    os.remove('test')
+
 
 def test_backed():
     #backed mode for layers isn't implemented, layers stay in memory
